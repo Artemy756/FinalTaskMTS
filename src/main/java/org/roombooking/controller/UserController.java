@@ -59,7 +59,7 @@ public class UserController implements Controller {
 
   private void getUserById() {
     service.get(
-            "/api/user",
+            "/api/user/:id",
             (Request request, Response response) -> {
               response.type("application/json");
               String body = request.body();
@@ -79,7 +79,7 @@ public class UserController implements Controller {
 
   private void getUserByEmail() {
     service.get(
-            "/api/user",
+            "/api/user/:id",
             (Request request, Response response) -> {
               response.type("application/json");
               String body = request.body();
@@ -99,7 +99,7 @@ public class UserController implements Controller {
 
   private void getUserByPhoneNumber() {
     service.get(
-            "/api/user",
+            "/api/user/:id",
             (Request request, Response response) -> {
               response.type("application/json");
               String body = request.body();

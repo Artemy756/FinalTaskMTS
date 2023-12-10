@@ -2,9 +2,7 @@ package org.roombooking.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.roombooking.controller.request.BookRequest;
-import org.roombooking.controller.request.CheckIntersectionRequest;
 import org.roombooking.controller.response.BookResponse;
-import org.roombooking.controller.response.CheckIntersectionResponse;
 import org.roombooking.controller.response.ErrorResponse;
 import org.roombooking.service.BookService;
 import org.slf4j.Logger;
@@ -50,25 +48,6 @@ public class BookRecordController implements Controller {
             }
     );
   }
-  private void checkIntersection(){
-    service.get(
-            "/api/book",
-            (Request request, Response response) -> {
-              response.type("application/json");
-              String body = request.body();
-              CheckIntersectionRequest checkIntersectionRequest =objectMapper.readValue(body,CheckIntersectionRequest.class);
-              try {
-                LOG.debug("book auditory ");
-                response.status(201);
-                return objectMapper.writeValueAsString(new CheckIntersectionResponse());
-              } catch (RuntimeException e) {
-                LOG.warn("Cannot book this time", e);
-                response.status(400);
-                return objectMapper.writeValueAsString(new ErrorResponse(e.getMessage()));
-              }
-            }
 
-    );
-  }
 
 }

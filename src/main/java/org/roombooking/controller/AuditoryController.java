@@ -60,7 +60,7 @@ public class AuditoryController implements Controller {
 
   private void checkIfAvailable() {
     service.get(
-            "/api/auditory",
+            "api/auditory/:id/checkifavailable",
             (Request request, Response response) -> {
               response.type("application/json");
               String body = request.body();
@@ -80,7 +80,7 @@ public class AuditoryController implements Controller {
 
   private void updateName() {
     service.patch(
-            "/api/auditory",
+            "api/auditory/:id/updatename",
             (Request request, Response response) -> {
               response.type("application/json");
               String body = request.body();
@@ -102,7 +102,7 @@ public class AuditoryController implements Controller {
 
   private void updateTime() {
     service.patch(
-            "/api/auditory",
+            "api/auditory/:id/updatetime",
             (Request request, Response response) -> {
               response.type("application/json");
               String body = request.body();
@@ -137,7 +137,7 @@ public class AuditoryController implements Controller {
 
   private void getAuditoryById() {
     service.get(
-            "/api/auditory",
+            "api/auditory/:id",
             (Request request, Response response) -> {
               response.type("application/json");
               String body = request.body();

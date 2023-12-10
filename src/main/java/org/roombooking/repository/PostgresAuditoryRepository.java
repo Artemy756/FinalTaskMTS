@@ -41,7 +41,7 @@ public class PostgresAuditoryRepository implements AuditoryRepository {
     }
 
     @Override
-    public Auditory getById(AuditoryId auditoryId) {
+    public Auditory getByAuditoryId(AuditoryId auditoryId) {
         try {
             return jdbi.inTransaction((Handle handle) -> {
                 Map<String, Object> result = handle.createQuery("SELECT auditory_id, number, available_time FROM auditories WHERE auditory_id = :userId")

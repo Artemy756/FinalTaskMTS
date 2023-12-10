@@ -6,14 +6,12 @@ import org.roombooking.entity.id.AuditoryId;
 import java.sql.Time;
 
 public interface AuditoryRepository {
-  long generateId();
+  AuditoryId generateId();
 
   void addAuditory(Auditory auditory);
 
   Auditory getById(AuditoryId auditoryId);
 
-  boolean checkIfAvailable(Auditory auditory, Time begin, Time duration);
-
-  void update(AuditoryId auditoryId);
+  void update(Auditory auditory);
 
 }

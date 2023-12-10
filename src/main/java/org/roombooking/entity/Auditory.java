@@ -2,17 +2,32 @@ package org.roombooking.entity;
 
 import org.roombooking.entity.id.AuditoryId;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public class Auditory {
-  private AuditoryId auditoryId;
-  private String number;
-  private List<LocalDateTime> availableTime;
+    private final AuditoryId auditoryId;
+    private final String number;
+    private final List<Pair> availableTime;
 
-  public Auditory(AuditoryId auditoryId, String number, List<LocalDateTime> availableTime) {
-    this.auditoryId = auditoryId;
-    this.number = number;
-    this.availableTime = availableTime;
-  }
+    public AuditoryId getAuditoryId() {
+        return auditoryId;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public List<Pair> getAvailableTime() {
+        return availableTime;
+    }
+
+    public record Pair(LocalTime begin, LocalTime end) {
+    }
+
+    public Auditory(AuditoryId auditoryId, String number, List<Pair> availableTime) {
+        this.auditoryId = auditoryId;
+        this.number = number;
+        this.availableTime = availableTime;
+    }
 }

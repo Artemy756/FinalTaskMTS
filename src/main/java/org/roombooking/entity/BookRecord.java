@@ -7,6 +7,6 @@ import org.roombooking.entity.id.UserId;
 
 import java.time.LocalDateTime;
 
-public record BookRecord(BookId bookId, UserId userId, AuditoryId auditoryId, LocalDateTime time) {
+public record BookRecord(BookId bookId, UserId userId, AuditoryId auditoryId, LocalDateTime startTime, LocalDateTime endTime) {
 
 }

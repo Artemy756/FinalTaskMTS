@@ -33,7 +33,6 @@ public class AuditoryController implements Controller {
     createAuditory();
     updateName();
     updateTime();
-    getAllAuditory();
     getAuditoryById();
   }
 
@@ -122,18 +121,6 @@ public class AuditoryController implements Controller {
 
   }
 
-  private void getAllAuditory() {
-    service.get(
-            "/api/auditory",
-            (Request request, Response response) -> {
-              response.type("application/json");
-              String body = request.body();
-              LOG.debug("find all");
-              response.status(201);
-              return objectMapper.writeValueAsString(new GetAllAuditoryResponse(auditoryService.getAllAuditory()));
-            }
-    );
-  }
 
   private void getAuditoryById() {
     service.get(

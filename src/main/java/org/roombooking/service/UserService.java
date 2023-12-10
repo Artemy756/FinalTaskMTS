@@ -31,7 +31,7 @@ public class UserService {
     try {
       return userRepository.getUserByPhoneNumber(phoneNumber);
     } catch (UserNotFoundException e) {
-      throw new UserNotFoundException("Cannot find user with phonenumber: " + phoneNumber, e);
+      throw new UserNotFoundException("Cannot find user with phone number: " + phoneNumber, e);
     }
   }
 

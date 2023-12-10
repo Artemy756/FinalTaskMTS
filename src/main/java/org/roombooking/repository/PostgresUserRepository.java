@@ -5,6 +5,8 @@ import org.jdbi.v3.core.Jdbi;
 import org.roombooking.entity.User;
 import org.roombooking.entity.id.UserId;
 
+import java.util.List;
+
 public class PostgresUserRepository implements UserRepository {
 
     private final Jdbi jdbi;
@@ -27,6 +29,16 @@ public class PostgresUserRepository implements UserRepository {
     @Override
     public void addUser(User user) {
 
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return null;
+    }
+
+    @Override
+    public User getUserById(UserId userId) {
+        return null;
     }
 
     @Override

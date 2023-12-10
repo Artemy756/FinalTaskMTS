@@ -29,7 +29,7 @@ public class AuditoryService {
     }
   }
 
-  public AuditoryId addAuditory(String number, List<LocalDateTime> availableTime) {
+  public AuditoryId addAuditory(String number, List<Auditory.Pair> availableTime) {
     AuditoryId auditoryId = auditoryRepository.generateId();
     Auditory auditory = new Auditory(auditoryId, number, availableTime);
     try {
@@ -54,7 +54,7 @@ public class AuditoryService {
     }
   }
 
-  public void updateAuditoryTime(AuditoryId id, List<LocalDateTime> availableTime) {
+  public void updateAuditoryTime(AuditoryId id, List<Auditory.Pair> availableTime) {
     Auditory auditory;
     try {
       auditory = auditoryRepository.getAuditoryById(id);

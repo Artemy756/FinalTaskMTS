@@ -2,6 +2,7 @@ package org.roombooking.entity;
 
 import org.roombooking.entity.id.AuditoryId;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
@@ -36,7 +37,7 @@ public class Auditory {
     return new Auditory(this.auditoryId, newNumber, this.availableTime);
   }
 
-  public Auditory withAvailableTime(List<LocalDateTime> newTime) {
+  public Auditory withAvailableTime(List<Pair> newTime) {
     return new Auditory(this.auditoryId, this.number, newTime);
   }
 

@@ -19,12 +19,11 @@ public class UserService {
     return userRepository.getAllUsers();
   }
 
-  public User getUserById(long id) {
-    var userId = new UserId(id);
+  public User getUserById(UserId id) {
     try {
-      return userRepository.getUserById(userId);
+      return userRepository.getUserById(id);
     } catch (UserNotFoundException e) {
-      throw new UserNotFoundException("Cannot find user with id: " + userId, e);
+      throw new UserNotFoundException("Cannot find user with id: " + id, e);
     }
   }
 

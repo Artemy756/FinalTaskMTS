@@ -21,12 +21,11 @@ public class AuditoryService {
     return auditoryRepository.getAllAuditory();
   }
 
-  public Auditory getAuditoryById(long id) {
-    AuditoryId auditoryId = new AuditoryId(id);
+  public Auditory getAuditoryById(AuditoryId id) {
     try {
-      return auditoryRepository.getAuditoryById(auditoryId);
+      return auditoryRepository.getAuditoryById(id);
     } catch (AuditoryNotFoundException e) {
-      throw new AuditoryNotFoundException("Cannot find auditory with id: " + auditoryId, e);
+      throw new AuditoryNotFoundException("Cannot find auditory with id: " + id, e);
     }
   }
 
@@ -41,10 +40,10 @@ public class AuditoryService {
     return auditoryId;
   }
 
-  public void updateAuditoryName(long id, String number) {
+  public void updateAuditoryName(AuditoryId id, String number) {
     Auditory auditory;
     try {
-      auditory = auditoryRepository.getAuditoryById(new AuditoryId(id));
+      auditory = auditoryRepository.getAuditoryById(id);
     } catch (AuditoryNotFoundException e) {
       throw new AuditoryUpdateException("Cannot update auditory with id: " + id, e);
     }
@@ -55,10 +54,10 @@ public class AuditoryService {
     }
   }
 
-  public void updateAuditoryTime(long id, List<LocalDateTime> availableTime) {
+  public void updateAuditoryTime(AuditoryId id, List<LocalDateTime> availableTime) {
     Auditory auditory;
     try {
-      auditory = auditoryRepository.getAuditoryById(new AuditoryId(id));
+      auditory = auditoryRepository.getAuditoryById(id);
     } catch (AuditoryNotFoundException e) {
       throw new AuditoryUpdateException("Cannot update auditory with id: " + id, e);
     }

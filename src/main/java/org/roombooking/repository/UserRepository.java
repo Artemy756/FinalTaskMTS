@@ -8,10 +8,15 @@ import java.util.List;
 
 public interface UserRepository {
   UserId generateId();
+
   void addUser(User user);
+
   List<User> getAllUsers();
+
   User getUserById(UserId userId);
+
   User getUserByPhoneNumber(String phoneNumber);
+
   User getUserByEmail(String email);
 
 }

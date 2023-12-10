@@ -10,6 +10,7 @@ public interface AuditoryRepository {
   AuditoryId generateId();
 
   void addAuditory(Auditory auditory);
+
   List<Auditory> getAllAuditory();
 
   Auditory getAuditoryById(AuditoryId auditoryId);

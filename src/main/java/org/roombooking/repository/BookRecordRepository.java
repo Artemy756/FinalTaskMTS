@@ -10,7 +10,10 @@ import java.util.List;
 
 public interface BookRecordRepository {
   long generateId();
+
   void book(UserId userId, AuditoryId auditoryId, Pair<LocalDateTime, LocalDateTime> time);
+
   boolean checkIntersection(AuditoryId auditoryId);
+
   List<BookRecord> getBookRecordsForUser(UserId userId);
 }

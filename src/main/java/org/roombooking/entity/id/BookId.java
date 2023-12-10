@@ -2,12 +2,12 @@ package org.roombooking.entity.id;
 
 import java.util.Objects;
 
-public record AuditoryId(long value) {
+public record BookId(long value) {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    AuditoryId id = (AuditoryId) o;
+    BookId id = (BookId) o;
     return value == id.value;
   }
 
@@ -15,5 +15,4 @@ public record AuditoryId(long value) {
   public int hashCode() {
     return Objects.hash(value);
   }
-
 }

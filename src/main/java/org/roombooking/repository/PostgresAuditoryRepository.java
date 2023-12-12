@@ -44,19 +44,23 @@ public class PostgresAuditoryRepository implements AuditoryRepository {
 
     @Override
     public List<Auditory> getAllAuditory() {
-        return jdbi.inTransaction((Handle handle) -> handle.createQuery(
-                        "SELECT auditory_id, number, available_time FROM auditories")
-                .mapToMap()
-                .list()
-                .stream()
-                .map((Map<String, Object> result) -> new Auditory(
-                        new AuditoryId((long) result.get("auditory_id")),
-                        (String) result.get("number"),
-                        Arrays.stream((LocalTime[][]) result.get("available_time"))
-                                .map(array -> new Auditory.Pair(array[0], array[1]))
-                                .collect(Collectors.toList())))
-                .collect(Collectors.toList())
-        );
+        try {
+            return jdbi.inTransaction((Handle handle) -> handle.createQuery(
+                            "SELECT auditory_id, number, available_time FROM auditories")
+                    .mapToMap()
+                    .list()
+                    .stream()
+                    .map((Map<String, Object> result) -> new Auditory(
+                            new AuditoryId((long) result.get("auditory_id")),
+                            (String) result.get("number"),
+                            Arrays.stream((LocalTime[][]) result.get("available_time"))
+                                    .map(array -> new Auditory.Pair(array[0], array[1]))
+                                    .collect(Collectors.toList())))
+                    .collect(Collectors.toList())
+            );
+        } catch (NullPointerException e) {
+            throw new ItemNotFoundException("Couldn't retrieve any auditories");
+        }
     }
 
     @Override
@@ -64,7 +68,7 @@ public class PostgresAuditoryRepository implements AuditoryRepository {
         try {
             return jdbi.inTransaction((Handle handle) -> {
                 Map<String, Object> result = handle.createQuery(
-                                "SELECT auditory_id, number, available_time FROM auditories WHERE auditory_id = :userId")
+                                "SELECT auditory_id, number, available_time FROM auditories WHERE auditory_id = :auditoryId")
                         .bind("auditoryId", auditoryId.value())
                         .mapToMap()
                         .first();

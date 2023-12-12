@@ -34,6 +34,7 @@ public class AuditoryController implements Controller {
     updateName();
     updateTime();
     getAuditoryById();
+    getAllAuditories();
   }
 
   private void createAuditory() {
@@ -137,6 +138,18 @@ public class AuditoryController implements Controller {
               } catch (AuditoryNotFoundException e) {
                 throw new AuditoryNotFoundException("Cannot find auditory by id=" + getAuditoryByIdRequest.auditoryId(), e);
               }
+            }
+    );
+  }
+  private void getAllAuditories() {
+    service.get(
+            "/api/auditory",
+            (Request request, Response response) -> {
+              response.type("application/json");
+              String body = request.body();
+              LOG.debug("find all");
+              response.status(201);
+              return objectMapper.writeValueAsString(new GetAllAuditoriesResponse(auditoryService.getAllAuditory()));
             }
     );
   }

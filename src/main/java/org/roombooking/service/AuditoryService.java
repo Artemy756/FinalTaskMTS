@@ -14,6 +14,7 @@ import java.util.List;
 public class AuditoryService {
   private final AuditoryRepository auditoryRepository;
 
+
   public AuditoryService(AuditoryRepository auditoryRepository) {
     this.auditoryRepository = auditoryRepository;
   }

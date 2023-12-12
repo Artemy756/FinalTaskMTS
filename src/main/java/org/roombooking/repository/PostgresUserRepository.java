@@ -42,11 +42,6 @@ public class PostgresUserRepository implements UserRepository {
     }
 
     @Override
-    public User getUserById(int id) {
-        return null;
-    }
-
-    @Override
     public User getUserByPhoneNumber(String phoneNumber) {
         return null;
     }

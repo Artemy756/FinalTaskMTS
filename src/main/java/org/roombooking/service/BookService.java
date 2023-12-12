@@ -12,6 +12,7 @@ import org.roombooking.repository.UserRepository;
 import org.roombooking.repository.exceptions.ItemNotFoundException;
 import org.roombooking.service.exceptions.AuditoryNotFoundException;
 import org.roombooking.service.exceptions.BookException;
+import org.roombooking.service.exceptions.DeleteException;
 import org.roombooking.service.exceptions.UserNotFoundException;
 
 import java.time.DayOfWeek;
@@ -159,6 +160,14 @@ public class BookService {
             return bookId;
         } else {
             throw new BookException("Failed to book auditory with given parameters");
+        }
+    }
+
+    public void cancelBook(BookId bookId) {
+        try {
+            bookRecordRepository.cancelBook(bookId);
+        } catch (ItemNotFoundException e) {
+            throw new DeleteException("Couldn't find book record with id=" + bookId, e);
         }
     }
 

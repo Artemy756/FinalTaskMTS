@@ -64,7 +64,6 @@ public class BookService {
 
     private Duration getAllowedDuration(User user) {
         List<BookRecord> books = bookRecordRepository.getBookRecordsForUser(user.getUserId());
-        Duration duration = Duration.ZERO;
 
         LocalDateTime thisMonday = LocalDateTime.now().with(DayOfWeek.MONDAY).withHour(0).withMinute(0).withSecond(0).withNano(0);
         LocalDateTime previousMonday = thisMonday.minusWeeks(1);
@@ -123,6 +122,19 @@ public class BookService {
         return Duration.between(start, end).compareTo(allowedDuration) <= 0;
     }
 
+    private boolean verifyAuditoryIsFree(AuditoryId auditoryId, LocalDateTime start, LocalDateTime end) {
+        List<BookRecord> bookRecords = bookRecordRepository.getBookRecordsForAuditory(auditoryId);
+        for (BookRecord bookRecord : bookRecords) {
+            LocalDateTime bookStart = bookRecord.startTime();
+            LocalDateTime bookEnd = bookRecord.endTime();
+            // check this condition, it's about intersecting time segments
+            if (!(bookStart.isAfter(end) || bookEnd.isBefore(start))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public BookId book(UserId userId, AuditoryId auditoryId, LocalDateTime start, LocalDateTime end) {
 
         User user;
@@ -140,6 +152,14 @@ public class BookService {
             throw new BookException("Couldn't find auditory with id=" + auditoryId, e);
         }
 
+        if (verifyInterval(auditory, start, end) && verifyDurationForWeek(user, start, end) && verifyAuditoryIsFree(auditoryId, start, end)) {
+            BookId bookId = bookRecordRepository.generateId();
+            BookRecord bookRecord = new BookRecord(bookId, userId, auditoryId, start, end);
+            bookRecordRepository.book(bookRecord);
+            return bookId;
+        } else {
+            throw new BookException("Failed to book auditory with given parameters");
+        }
     }
 
     public List<BookRecord> getBookRecordsForUser(UserId userId) {

@@ -34,6 +34,7 @@ public class AuditoryController implements Controller {
     updateName();
     updateTime();
     getAuditoryById();
+    getAllAuditories();
   }
 
   private void createAuditory() {

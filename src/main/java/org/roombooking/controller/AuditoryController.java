@@ -140,4 +140,16 @@ public class AuditoryController implements Controller {
             }
     );
   }
+  private void getAllAuditories() {
+    service.get(
+            "/api/auditory",
+            (Request request, Response response) -> {
+              response.type("application/json");
+              String body = request.body();
+              LOG.debug("find all");
+              response.status(201);
+              return objectMapper.writeValueAsString(new GetAllAuditoriesResponse(auditoryService.getAllAuditory()));
+            }
+    );
+  }
 }

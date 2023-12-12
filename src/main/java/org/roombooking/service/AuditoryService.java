@@ -3,6 +3,7 @@ package org.roombooking.service;
 import org.roombooking.entity.Auditory;
 import org.roombooking.entity.id.AuditoryId;
 import org.roombooking.repository.AuditoryRepository;
+import org.roombooking.repository.exceptions.ItemNotFoundException;
 import org.roombooking.service.exceptions.AuditoryCreateException;
 import org.roombooking.service.exceptions.AuditoryNotFoundException;
 import org.roombooking.service.exceptions.AuditoryUpdateException;
@@ -24,7 +25,7 @@ public class AuditoryService {
   public Auditory getAuditoryById(AuditoryId id) {
     try {
       return auditoryRepository.getAuditoryById(id);
-    } catch (AuditoryNotFoundException e) {
+    } catch (ItemNotFoundException e) {
       throw new AuditoryNotFoundException("Cannot find auditory with id: " + id, e);
     }
   }
@@ -44,7 +45,7 @@ public class AuditoryService {
     Auditory auditory;
     try {
       auditory = auditoryRepository.getAuditoryById(id);
-    } catch (AuditoryNotFoundException e) {
+    } catch (ItemNotFoundException e) {
       throw new AuditoryUpdateException("Cannot update auditory with id: " + id, e);
     }
     try {
@@ -58,12 +59,12 @@ public class AuditoryService {
     Auditory auditory;
     try {
       auditory = auditoryRepository.getAuditoryById(id);
-    } catch (AuditoryNotFoundException e) {
+    } catch (ItemNotFoundException e) {
       throw new AuditoryUpdateException("Cannot update auditory with id: " + id, e);
     }
     try {
       auditoryRepository.update(auditory.withAvailableTime(availableTime));
-    } catch (AuditoryNotFoundException e) {
+    } catch (ItemNotFoundException e) {
       throw new AuditoryUpdateException("Cannot update auditory with id: " + id, e);
     }
   }

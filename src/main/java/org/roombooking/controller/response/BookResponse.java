@@ -1,4 +1,6 @@
 package org.roombooking.controller.response;
 
-public record BookResponse() {
+import org.roombooking.entity.id.BookId;
+
+public record BookResponse(BookId bookId) {
 }

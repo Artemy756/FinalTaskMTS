@@ -3,7 +3,6 @@ package org.roombooking.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.roombooking.controller.request.*;
 import org.roombooking.controller.response.*;
-import org.roombooking.entity.Auditory;
 import org.roombooking.entity.id.AuditoryId;
 import org.roombooking.repository.exceptions.ItemNotFoundException;
 import org.roombooking.service.AuditoryService;

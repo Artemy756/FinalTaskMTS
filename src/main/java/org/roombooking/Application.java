@@ -4,10 +4,10 @@ import org.roombooking.controller.Controller;
 
 import java.util.List;
 
-public class Aplication {
+public class Application {
   private final List<Controller> controllers;
 
-  public Aplication(List<Controller> controllers) {
+  public Application(List<Controller> controllers) {
     this.controllers = controllers;
   }
 

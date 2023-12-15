@@ -9,9 +9,7 @@ import org.roombooking.controller.AuditoryController;
 import org.roombooking.controller.BookRecordController;
 import org.roombooking.controller.BookRecordFreeMakerController;
 import org.roombooking.controller.UserController;
-import org.roombooking.repository.PostgresAuditoryRepository;
-import org.roombooking.repository.PostgresBookRecordRepository;
-import org.roombooking.repository.PostgresUserRepository;
+import org.roombooking.repository.*;
 import org.roombooking.service.AuditoryService;
 import org.roombooking.service.BookService;
 import org.roombooking.service.UserService;
@@ -34,10 +32,12 @@ public class Main {
                             config.getString("app.database.password"))
                     .load();
     flyway.migrate();
-    final var auditoryService = new AuditoryService(new PostgresAuditoryRepository(jdbi));
-    final var bookService = new BookService( new PostgresBookRecordRepository(jdbi),new PostgresUserRepository(jdbi),new PostgresAuditoryRepository(jdbi));
-    final var userService = new UserService(new PostgresUserRepository(jdbi));
-    Aplication aplication = new Aplication(
+    UserRepository userRepository = new PostgresUserRepository(jdbi);
+    AuditoryRepository auditoryRepository = new PostgresAuditoryRepository(jdbi);
+    final var auditoryService = new AuditoryService(auditoryRepository);
+    final var bookService = new BookService( new PostgresBookRecordRepository(jdbi), userRepository, auditoryRepository);
+    final var userService = new UserService(userRepository);
+    Application application = new Application(
             List.of(
                     new UserController(
                             service,
@@ -51,7 +51,6 @@ public class Main {
                             service,
                             bookService,
                             objectMapper
-
                     ), new BookRecordFreeMakerController(
                             service,
                             bookService,
@@ -59,6 +58,6 @@ public class Main {
                     )
             )
     );
-    aplication.start();
+    application.start();
   }
 }

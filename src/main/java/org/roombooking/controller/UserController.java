@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.roombooking.controller.request.*;
 import org.roombooking.controller.response.*;
 import org.roombooking.entity.User;
+import org.roombooking.entity.id.AuditoryId;
 import org.roombooking.entity.id.UserId;
 import org.roombooking.service.UserService;
 import org.roombooking.service.exceptions.AuditoryNotFoundException;
@@ -65,12 +66,12 @@ public class UserController implements Controller {
               String body = request.body();
               GetUserByIdRequest getUserByIdRequest = objectMapper.readValue(body, GetUserByIdRequest.class);
               try {
-                User user = userService.getUserById(getUserByIdRequest.userId());
+                UserId userId = new UserId(Long.parseLong(request.params("auditoryId")));
                 LOG.debug("get user by id");
                 response.status(201);
-                return objectMapper.writeValueAsString(new GetUserResponse(user));
+                return objectMapper.writeValueAsString(new GetUserResponse(userService.getUserById(userId)));
               } catch (UserNotFoundException e) {
-                throw  new UserNotFoundException("Cannot find user by id=" + getUserByIdRequest.userId(), e);
+                throw new UserNotFoundException("Cannot find user by id=" + getUserByIdRequest.userId(), e);
               }
             }
 
@@ -85,12 +86,11 @@ public class UserController implements Controller {
               String body = request.body();
               GetUserByEmailRequest getUserByEmailRequest = objectMapper.readValue(body, GetUserByEmailRequest.class);
               try {
-                User user = userService.getUserByEmail(getUserByEmailRequest.email());
                 LOG.debug("get user by email");
                 response.status(201);
-                return objectMapper.writeValueAsString(new GetUserResponse(user));
+                return objectMapper.writeValueAsString(new GetUserResponse(userService.getUserByEmail(getUserByEmailRequest.email())));
               } catch (UserNotFoundException e) {
-                throw  new UserNotFoundException("Cannot find user by email=" + getUserByEmailRequest.email(), e);
+                throw new UserNotFoundException("Cannot find user by email=" + getUserByEmailRequest.email(), e);
               }
             }
 
@@ -105,12 +105,11 @@ public class UserController implements Controller {
               String body = request.body();
               GetUserByPhoneNumberRequst getUserByPhoneNumberRequst = objectMapper.readValue(body, GetUserByPhoneNumberRequst.class);
               try {
-                User user = userService.getUserByPhoneNumber(getUserByPhoneNumberRequst.number());
                 LOG.debug("get user by phone number");
                 response.status(201);
-                return objectMapper.writeValueAsString(new GetUserResponse(user));
+                return objectMapper.writeValueAsString(new GetUserResponse(userService.getUserByPhoneNumber(getUserByPhoneNumberRequst.number())));
               } catch (UserNotFoundException e) {
-                throw  new UserNotFoundException("Cannot find user by number=" + getUserByPhoneNumberRequst.number(), e);
+                throw new UserNotFoundException("Cannot find user by number=" + getUserByPhoneNumberRequst.number(), e);
               }
             }
 
@@ -122,10 +121,13 @@ public class UserController implements Controller {
             "/api/auditory",
             (Request request, Response response) -> {
               response.type("application/json");
-              String body = request.body();
-              LOG.debug("find all");
-              response.status(201);
-              return objectMapper.writeValueAsString(new GetAllUsersResponse(userService.getAllUser()));
+              try {
+                LOG.debug("find all");
+                response.status(201);
+                return objectMapper.writeValueAsString(new GetAllUsersResponse(userService.getAllUser()));
+              } catch (UserNotFoundException e) {
+                throw new UserNotFoundException("Cannot find user ", e);
+              }
             }
     );
   }

@@ -60,7 +60,6 @@ public class BookService {
         return true;
       }
     }
-
     return false;
   }
 
@@ -134,7 +133,6 @@ public class BookService {
         return false;
       }
     }
-
     return true;
   }
 
@@ -145,7 +143,6 @@ public class BookService {
 
     try {
       user = userRepository.getUserById(userId);
-
     } catch (ItemNotFoundException e) {
       throw new BookException("Couldn't find user with id=" + userId, e);
     }

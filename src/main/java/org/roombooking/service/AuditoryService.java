@@ -20,7 +20,12 @@ public class AuditoryService {
   }
 
   public List<Auditory> getAllAuditory() {
-    return auditoryRepository.getAllAuditory();
+    try {
+      return auditoryRepository.getAllAuditory();
+    } catch (ItemNotFoundException e){
+      throw new AuditoryNotFoundException("Cannot find auuditory: ", e);
+
+    }
   }
 
   public Auditory getAuditoryById(AuditoryId id) {

@@ -5,6 +5,7 @@ import org.roombooking.controller.request.*;
 import org.roombooking.controller.response.*;
 import org.roombooking.entity.Auditory;
 import org.roombooking.entity.id.AuditoryId;
+import org.roombooking.repository.exceptions.ItemNotFoundException;
 import org.roombooking.service.AuditoryService;
 import org.roombooking.service.exceptions.AuditoryCreateException;
 import org.roombooking.service.exceptions.AuditoryNotFoundException;
@@ -86,7 +87,8 @@ public class AuditoryController implements Controller {
               String body = request.body();
               AuditoryUpdateNameRequest auditoryUpdateRequest = objectMapper.readValue(body, AuditoryUpdateNameRequest.class);
               try {
-                auditoryService.updateAuditoryName(auditoryUpdateRequest.id(), auditoryUpdateRequest.number());
+                AuditoryId auditoryId = new AuditoryId(Long.parseLong(request.params("auditoryId")));
+                auditoryService.updateAuditoryName(auditoryId, auditoryUpdateRequest.number());
                 LOG.debug("update auditory ");
                 response.status(201);
                 return objectMapper.writeValueAsString("");
@@ -108,7 +110,8 @@ public class AuditoryController implements Controller {
               String body = request.body();
               AuditoryUpdateTimeRequest auditoryUpdateRequest = objectMapper.readValue(body, AuditoryUpdateTimeRequest.class);
               try {
-                auditoryService.updateAuditoryTime(auditoryUpdateRequest.id(), auditoryUpdateRequest.availableTime());
+                AuditoryId auditoryId = new AuditoryId(Long.parseLong(request.params("auditoryId")));
+                auditoryService.updateAuditoryTime(auditoryId, auditoryUpdateRequest.availableTime());
                 LOG.debug("update auditory ");
                 response.status(201);
                 return objectMapper.writeValueAsString("");
@@ -131,25 +134,30 @@ public class AuditoryController implements Controller {
               String body = request.body();
               GetAuditoryByIdRequest getAuditoryByIdRequest = objectMapper.readValue(body, GetAuditoryByIdRequest.class);
               try {
-                Auditory auditory = auditoryService.getAuditoryById(getAuditoryByIdRequest.auditoryId());
+                AuditoryId auditoryId = new AuditoryId(Long.parseLong(request.params("auditoryId")));
                 LOG.debug("check available ");
                 response.status(201);
-                return objectMapper.writeValueAsString(new GetAuditoryResponse(auditory));
+                return objectMapper.writeValueAsString(new GetAuditoryResponse(auditoryService.getAuditoryById(auditoryId)));
               } catch (AuditoryNotFoundException e) {
                 throw new AuditoryNotFoundException("Cannot find auditory by id=" + getAuditoryByIdRequest.auditoryId(), e);
               }
             }
     );
   }
+
   private void getAllAuditories() {
     service.get(
             "/api/auditory",
             (Request request, Response response) -> {
               response.type("application/json");
-              String body = request.body();
-              LOG.debug("find all");
-              response.status(201);
-              return objectMapper.writeValueAsString(new GetAllAuditoriesResponse(auditoryService.getAllAuditory()));
+              try {
+                LOG.debug("find all");
+                response.status(201);
+                return objectMapper.writeValueAsString(new GetAllAuditoriesResponse(auditoryService.getAllAuditory()));
+              } catch (ItemNotFoundException e) {
+                throw new AuditoryNotFoundException("Cannot find auditory", e);
+
+              }
             }
     );
   }

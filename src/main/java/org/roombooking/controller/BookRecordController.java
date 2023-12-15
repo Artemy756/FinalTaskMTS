@@ -6,7 +6,9 @@ import org.roombooking.controller.request.CancelBookRequest;
 import org.roombooking.controller.request.GetBookRecordsForAuditoryRequest;
 import org.roombooking.controller.request.GetBookRecordsForUserRequest;
 import org.roombooking.controller.response.*;
+import org.roombooking.entity.id.AuditoryId;
 import org.roombooking.entity.id.BookId;
+import org.roombooking.entity.id.UserId;
 import org.roombooking.service.BookService;
 import org.roombooking.service.exceptions.AuditoryNotFoundException;
 import org.roombooking.service.exceptions.BookException;
@@ -112,8 +114,7 @@ public class BookRecordController implements Controller {
                 LOG.debug("find all");
                 response.status(201);
                 return objectMapper.writeValueAsString(new GetBookRecordsForAuditoryResponse(
-                        bookService.getBookRecordsForAuditory(getBookRecordsForAuditoryRequest.auditoryId())
-                ));
+                        bookService.getBookRecordsForAuditory(getBookRecordsForAuditoryRequest.auditoryId())));
               } catch (AuditoryNotFoundException e) {
                 LOG.warn("Cannot book this time", e);
                 response.status(400);

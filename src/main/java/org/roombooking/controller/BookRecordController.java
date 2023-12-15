@@ -6,9 +6,7 @@ import org.roombooking.controller.request.CancelBookRequest;
 import org.roombooking.controller.request.GetBookRecordsForAuditoryRequest;
 import org.roombooking.controller.request.GetBookRecordsForUserRequest;
 import org.roombooking.controller.response.*;
-import org.roombooking.entity.id.AuditoryId;
 import org.roombooking.entity.id.BookId;
-import org.roombooking.entity.id.UserId;
 import org.roombooking.service.BookService;
 import org.roombooking.service.exceptions.AuditoryNotFoundException;
 import org.roombooking.service.exceptions.BookException;
@@ -36,7 +34,7 @@ public class BookRecordController implements Controller {
     book();
     getBookRecordsForAuditory();
     getBookRecordsForUser();
-    cancelbook();
+    cancel();
   }
 
   private void book() {
@@ -60,9 +58,9 @@ public class BookRecordController implements Controller {
     );
   }
 
-  private void cancelbook() {
+  private void cancel() {
     service.delete(
-            "/api/book",
+            "/api/book/cancel",
             (Request request, Response response) -> {
               response.type("application/json");
               String body = request.body();
@@ -84,7 +82,7 @@ public class BookRecordController implements Controller {
 
   private void getBookRecordsForUser() {
     service.get(
-            "/api/book",
+            "/api/book/for-user",
             (Request request, Response response) -> {
               response.type("application/json");
               String body = request.body();
@@ -105,7 +103,7 @@ public class BookRecordController implements Controller {
 
   private void getBookRecordsForAuditory() {
     service.get(
-            "/api/book",
+            "/api/book/for-auditory",
             (Request request, Response response) -> {
               response.type("application/json");
               String body = request.body();

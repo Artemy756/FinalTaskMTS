@@ -1,6 +1,7 @@
 package org.roombooking;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.flywaydb.core.Flyway;
@@ -22,6 +23,7 @@ public class Main {
     Service service = Service.ignite();
     Config config = ConfigFactory.load();
     ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerModule(new JavaTimeModule());
     Jdbi jdbi = Jdbi.create(config.getString("app.database.url"), config.getString("app.database.user"),
             config.getString("app.database.password"));
     Flyway flyway =

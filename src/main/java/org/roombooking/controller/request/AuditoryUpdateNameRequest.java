@@ -2,5 +2,5 @@ package org.roombooking.controller.request;
 
 import org.roombooking.entity.id.AuditoryId;
 
-public record AuditoryUpdateNameRequest(AuditoryId id, String number){
+public record AuditoryUpdateNameRequest(String number){
 }

@@ -6,5 +6,5 @@ import org.roombooking.entity.id.AuditoryId;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record AuditoryUpdateTimeRequest(AuditoryId id, List<Auditory.Pair> availableTime) {
+public record AuditoryUpdateTimeRequest(List<Auditory.Pair> availableTime) {
 }

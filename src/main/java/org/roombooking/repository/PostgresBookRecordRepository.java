@@ -8,7 +8,7 @@ import org.roombooking.entity.id.BookId;
 import org.roombooking.entity.id.UserId;
 import org.roombooking.repository.exceptions.ItemNotFoundException;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,11 +37,11 @@ public class PostgresBookRecordRepository implements BookRecordRepository {
     public void book(BookRecord bookRecord) {
         jdbi.useTransaction((Handle handle) -> handle.createUpdate(
                         "INSERT INTO books (book_id, user_id, auditory_id, start_time, end_time) VALUES (:bookId, :userId, :auditoryId, :startTime, :endTime)")
-                .bind("bookId", bookRecord.bookId())
-                .bind("userId", bookRecord.userId())
-                .bind("auditoryId", bookRecord.auditoryId())
-                .bind("start_time", bookRecord.startTime())
-                .bind("end_time", bookRecord.endTime())
+                .bind("bookId", bookRecord.bookId().value())
+                .bind("userId", bookRecord.userId().value())
+                .bind("auditoryId", bookRecord.auditoryId().value())
+                .bind("startTime", bookRecord.startTime())
+                .bind("endTime", bookRecord.endTime())
                 .execute());
     }
 
@@ -72,8 +72,8 @@ public class PostgresBookRecordRepository implements BookRecordRepository {
                             new BookId((long) result.get("book_id")),
                             new UserId((long) result.get("user_id")),
                             new AuditoryId((long) result.get("auditory_id")),
-                            (LocalDateTime) result.get("start_time"),
-                            (LocalDateTime) result.get("end_time")))
+                            ((Timestamp) result.get("start_time")).toLocalDateTime(),
+                            ((Timestamp) result.get("end_time")).toLocalDateTime()))
                     .collect(Collectors.toList())
             );
         } catch(NullPointerException e) {
@@ -94,8 +94,8 @@ public class PostgresBookRecordRepository implements BookRecordRepository {
                             new BookId((long) result.get("book_id")),
                             new UserId((long) result.get("user_id")),
                             new AuditoryId((long) result.get("auditory_id")),
-                            (LocalDateTime) result.get("start_time"),
-                            (LocalDateTime) result.get("end_time")))
+                            ((Timestamp) result.get("start_time")).toLocalDateTime(),
+                            ((Timestamp) result.get("end_time")).toLocalDateTime()))
                     .collect(Collectors.toList())
             );
         } catch(NullPointerException e) {

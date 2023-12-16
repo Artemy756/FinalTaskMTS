@@ -16,6 +16,7 @@ import org.roombooking.service.BookService;
 import org.roombooking.service.UserService;
 import spark.Service;
 
+import java.time.LocalTime;
 import java.util.List;
 
 public class Main {
@@ -26,6 +27,7 @@ public class Main {
     objectMapper.registerModule(new JavaTimeModule());
     Jdbi jdbi = Jdbi.create(config.getString("app.database.url"), config.getString("app.database.user"),
             config.getString("app.database.password"));
+    jdbi.registerArrayType(LocalTime.class, "TIME");
     Flyway flyway =
             Flyway.configure()
                     .outOfOrder(true)

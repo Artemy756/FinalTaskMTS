@@ -55,7 +55,7 @@ public class PostgresUserRepository implements UserRepository {
                             (String) result.get("email")))
                     .collect(Collectors.toList())
             );
-        } catch(NullPointerException e) {
+        } catch(RuntimeException e) {
             throw new ItemNotFoundException("Couldn't retrieve any users");
         }
     }
@@ -76,7 +76,7 @@ public class PostgresUserRepository implements UserRepository {
                         ((String) result.get("email"))
                 );
             });
-        } catch (NullPointerException e) {
+        } catch (RuntimeException e) {
             throw new ItemNotFoundException("Couldn't find user with id=" + userId.value());
         }
     }
@@ -97,7 +97,7 @@ public class PostgresUserRepository implements UserRepository {
                         ((String) result.get("email"))
                 );
             });
-        } catch (NullPointerException e) {
+        } catch (RuntimeException e) {
             throw new ItemNotFoundException("Couldn't find user with phoneNumber=" + phoneNumber);
         }
     }
@@ -118,7 +118,7 @@ public class PostgresUserRepository implements UserRepository {
                         ((String) result.get("email"))
                 );
             });
-        } catch (NullPointerException e) {
+        } catch (RuntimeException e) {
             throw new ItemNotFoundException("Couldn't find user with email=" + email);
         }
     }

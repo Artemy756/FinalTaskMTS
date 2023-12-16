@@ -210,7 +210,16 @@ class MainTest {
                 .uri(URI.create("http://localhost:%d/api/book/for-auditory".formatted(service.port()))).build(), HttpResponse.BodyHandlers.ofString(UTF_8)
         );
         assertEquals(201, response13.statusCode());
-
+        HttpResponse<String> response14 = HttpClient.newHttpClient()
+                .send(
+                        HttpRequest.newBuilder()
+                                .GET(
+                                )
+                                .uri(URI.create("http://localhost:%d/api/auditory/12345678".formatted(service.port())))
+                                .build(),
+                        HttpResponse.BodyHandlers.ofString(UTF_8)
+                );
+        assertEquals(400, response14.statusCode());
     }
 
 }

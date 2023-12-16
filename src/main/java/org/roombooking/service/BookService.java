@@ -39,7 +39,7 @@ public class BookService {
         LocalTime userBegin = start.toLocalTime();
         LocalTime userEnd = end.toLocalTime();
 
-        if (userEnd.isAfter(userBegin)) {
+        if (userBegin.isAfter(userEnd)) {
             return false;
         }
 

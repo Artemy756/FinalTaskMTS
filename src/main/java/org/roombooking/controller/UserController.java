@@ -66,7 +66,9 @@ public class UserController implements Controller {
                         response.status(201);
                         return objectMapper.writeValueAsString(new GetUserResponse(userService.getUserById(userId)));
                     } catch (UserNotFoundException e) {
-                        throw new UserNotFoundException("Cannot find user by id=" + userId, e);
+                        LOG.warn("Cannot find user by id", e);
+                        response.status(400);
+                        return objectMapper.writeValueAsString(new ErrorResponse(e.getMessage()));
                     }
                 }
 
@@ -85,7 +87,9 @@ public class UserController implements Controller {
                         response.status(201);
                         return objectMapper.writeValueAsString(new GetUserResponse(userService.getUserByEmail(getUserByEmailRequest.email())));
                     } catch (UserNotFoundException e) {
-                        throw new UserNotFoundException("Cannot find user by email=" + getUserByEmailRequest.email(), e);
+                        LOG.warn("Cannot find user by email", e);
+                        response.status(400);
+                        return objectMapper.writeValueAsString(new ErrorResponse(e.getMessage()));
                     }
                 }
 
@@ -104,7 +108,9 @@ public class UserController implements Controller {
                         response.status(201);
                         return objectMapper.writeValueAsString(new GetUserResponse(userService.getUserByPhoneNumber(getUserByPhoneNumberRequst.number())));
                     } catch (UserNotFoundException e) {
-                        throw new UserNotFoundException("Cannot find user by number=" + getUserByPhoneNumberRequst.number(), e);
+                        LOG.warn("Cannot find user by number", e);
+                        response.status(400);
+                        return objectMapper.writeValueAsString(new ErrorResponse(e.getMessage()));
                     }
                 }
 
@@ -121,7 +127,9 @@ public class UserController implements Controller {
                         response.status(201);
                         return objectMapper.writeValueAsString(new GetAllUsersResponse(userService.getAllUser()));
                     } catch (UserNotFoundException e) {
-                        throw new UserNotFoundException("Cannot find user ", e);
+                        LOG.warn("Cannot find user", e);
+                        response.status(400);
+                        return objectMapper.writeValueAsString(new ErrorResponse(e.getMessage()));
                     }
                 }
         );

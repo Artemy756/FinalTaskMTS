@@ -2,11 +2,15 @@ package org.roombooking.repository;
 
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
+import org.postgresql.jdbc.PgArray;
 import org.roombooking.entity.Auditory;
 import org.roombooking.entity.id.AuditoryId;
 import org.roombooking.repository.exceptions.ItemNotFoundException;
 
+import java.sql.SQLException;
+import java.sql.Time;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +22,23 @@ public class PostgresAuditoryRepository implements AuditoryRepository {
 
     public PostgresAuditoryRepository(Jdbi jdbi) {
         this.jdbi = jdbi;
+    }
+
+    private LocalTime[] availableTimeArray(List<Auditory.Pair> availableTime) {
+        LocalTime[] sqlArray = new LocalTime[availableTime.size() * 2];
+        for (int i = 0; i < sqlArray.length; i += 2) {
+            sqlArray[i] = availableTime.get(i / 2).begin();
+            sqlArray[i + 1] = availableTime.get(i / 2).end();
+        }
+        return sqlArray;
+    }
+
+    private List<Auditory.Pair> availableTimeList(Time[] sqlArray) {
+        List<Auditory.Pair> availableTime = new ArrayList<>();
+        for (int i = 0; i < sqlArray.length; i+= 2) {
+            availableTime.add(new Auditory.Pair(sqlArray[i].toLocalTime(), sqlArray[i + 1].toLocalTime()));
+        }
+        return availableTime;
     }
 
     @Override
@@ -34,12 +55,14 @@ public class PostgresAuditoryRepository implements AuditoryRepository {
 
     @Override
     public void addAuditory(Auditory auditory) {
-        jdbi.useTransaction((Handle handle) -> handle.createUpdate(
-                        "INSERT INTO auditories (auditory_id, number, available_time) VALUES (:auditoryId, :number, :availableTime)")
-                .bind("auditoryId", auditory.getAuditoryId().value())
-                .bind("number", auditory.getNumber())
-                .bind("availableTime", auditory.getAvailableTime().stream().map((Auditory.Pair pair) -> new LocalTime[]{pair.begin(), pair.end()}).toArray())
-                .execute());
+        jdbi.registerArrayType(LocalTime.class, "TIME");
+        LocalTime[] testLocalTimes = new LocalTime[] {LocalTime.of(12, 0), LocalTime.of(14, 0)};
+            jdbi.useTransaction((Handle handle) -> handle.createUpdate(
+                            "INSERT INTO auditories (auditory_id, number, available_time) VALUES (:auditoryId, :number, :availableTime)")
+                    .bind("auditoryId", auditory.getAuditoryId().value())
+                    .bind("number", auditory.getNumber())
+                    .bind("availableTime",availableTimeArray(auditory.getAvailableTime()))
+                    .execute());
     }
 
     @Override
@@ -50,12 +73,16 @@ public class PostgresAuditoryRepository implements AuditoryRepository {
                     .mapToMap()
                     .list()
                     .stream()
-                    .map((Map<String, Object> result) -> new Auditory(
-                            new AuditoryId((long) result.get("auditory_id")),
-                            (String) result.get("number"),
-                            Arrays.stream((LocalTime[][]) result.get("available_time"))
-                                    .map(array -> new Auditory.Pair(array[0], array[1]))
-                                    .collect(Collectors.toList())))
+                    .map((Map<String, Object> result) -> {
+                        try {
+                            return new Auditory(
+                                    new AuditoryId((long) result.get("auditory_id")),
+                                    (String) result.get("number"),
+                                    (availableTimeList((Time[]) ((PgArray) result.get("available_time")).getArray())));
+                        } catch (SQLException e) {
+                            return null;
+                        }
+                    })
                     .collect(Collectors.toList())
             );
         } catch (NullPointerException e) {
@@ -75,10 +102,10 @@ public class PostgresAuditoryRepository implements AuditoryRepository {
                 return new Auditory(
                         (new AuditoryId((long) result.get("auditory_id"))),
                         ((String) result.get("number")),
-                        (Arrays.stream((LocalTime[][]) result.get("available_time")).map(array -> new Auditory.Pair(array[0], array[1])).collect(Collectors.toList()))
+                        (availableTimeList((Time[]) ((PgArray) result.get("available_time")).getArray()))
                 );
             });
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | SQLException e) {
             throw new ItemNotFoundException("Couldn't find auditory with id=" + auditoryId.value());
         }
     }
@@ -96,10 +123,10 @@ public class PostgresAuditoryRepository implements AuditoryRepository {
             }
 
             handle.createUpdate(
-                            "UPDATE auditories SET number = :number, availableTime = :availableTime WHERE auditory_id = auditoryId")
+                            "UPDATE auditories SET number = :number, available_time = :availableTime WHERE auditory_id = :auditoryId")
                     .bind("auditoryId", auditory.getAuditoryId().value())
                     .bind("number", auditory.getNumber())
-                    .bind("availableTime", auditory.getAvailableTime().stream().map((Auditory.Pair pair) -> new LocalTime[]{pair.begin(), pair.end()}).toArray())
+                    .bind("availableTime", availableTimeArray(auditory.getAvailableTime()))
                     .execute();
         });
     }

@@ -60,7 +60,7 @@ public class UserController implements Controller {
                 "/api/user/:id",
                 (Request request, Response response) -> {
                     response.type("application/json");
-                    UserId userId = new UserId(Long.parseLong(request.params("auditoryId")));
+                    UserId userId = new UserId(Long.parseLong(request.params("id")));
                     try {
                         LOG.debug("get user by id");
                         response.status(201);
@@ -113,7 +113,7 @@ public class UserController implements Controller {
 
     private void getAllUsers() {
         service.get(
-                "/api/auditory",
+                "/api/user",
                 (Request request, Response response) -> {
                     response.type("application/json");
                     try {

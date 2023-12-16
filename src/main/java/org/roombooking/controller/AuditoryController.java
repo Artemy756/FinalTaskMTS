@@ -130,7 +130,7 @@ public class AuditoryController implements Controller {
                 "api/auditory/:id",
                 (Request request, Response response) -> {
                     response.type("application/json");
-                    AuditoryId auditoryId = new AuditoryId(Long.parseLong(request.params("auditoryId")));
+                    AuditoryId auditoryId = new AuditoryId(Long.parseLong(request.params("id")));
                     try {
                         LOG.debug("got auditory with id={}", auditoryId);
                         response.status(201);

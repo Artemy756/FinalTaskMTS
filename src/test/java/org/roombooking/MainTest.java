@@ -155,7 +155,7 @@ class MainTest {
                                                                                {
                                                                                     "number": "two"}
                         """))
-                .uri(URI.create("http://localhost:%d/api/auditory/:id/updatename".formatted(service.port()))).build(), HttpResponse.BodyHandlers.ofString(UTF_8)
+                .uri(URI.create("http://localhost:%d/api/auditory/1/updatename".formatted(service.port()))).build(), HttpResponse.BodyHandlers.ofString(UTF_8)
         );
         assertEquals(201, response6.statusCode());
         HttpResponse<String> response7 = HttpClient.newHttpClient()
@@ -186,27 +186,27 @@ class MainTest {
         );
         assertEquals(201, response9.statusCode());
         HttpResponse<String> response10 = HttpClient.newHttpClient().send(HttpRequest.newBuilder()
-                .method("PATCH", HttpRequest.BodyPublishers.ofString("""
-                        {"userId":{"value":3},"auditoryId":{"value":1},"start":[2023,12,17,18,0],"end":[2023,12,17,19,0]}                                                        }""\")
+                .method("POST", HttpRequest.BodyPublishers.ofString("""
+                        {"userId":{"value":1},"auditoryId":{"value":1},"start":[2023,12,17,15,0],"end":[2023,12,17,16,0]}                                                        }""\")
                          """))
                 .uri(URI.create("http://localhost:%d/api/book".formatted(service.port()))).build(), HttpResponse.BodyHandlers.ofString(UTF_8)
         );
         assertEquals(201, response10.statusCode());
         HttpResponse<String> response11 = HttpClient.newHttpClient().send(HttpRequest.newBuilder()
                 .method("DELETE", HttpRequest.BodyPublishers.ofString("""
-                        {"bookId":{"value":3}}"""))
+                        {"bookId":{"value":1}}"""))
                 .uri(URI.create("http://localhost:%d/api/book/cancel".formatted(service.port()))).build(), HttpResponse.BodyHandlers.ofString(UTF_8)
         );
         assertEquals(204, response11.statusCode());
         HttpResponse<String> response12 = HttpClient.newHttpClient().send(HttpRequest.newBuilder()
                 .method("GET", HttpRequest.BodyPublishers.ofString("""
-                        {"userId":{"value":3}}"""))
+                        {"userId":{"value":1}}"""))
                 .uri(URI.create("http://localhost:%d/api/book/for-user".formatted(service.port()))).build(), HttpResponse.BodyHandlers.ofString(UTF_8)
         );
         assertEquals(201, response12.statusCode());
         HttpResponse<String> response13 = HttpClient.newHttpClient().send(HttpRequest.newBuilder()
                 .method("GET", HttpRequest.BodyPublishers.ofString("""
-                        {"auditoryId":{"value":3}}"""))
+                        {"auditoryId":{"value":1}}"""))
                 .uri(URI.create("http://localhost:%d/api/book/for-auditory".formatted(service.port()))).build(), HttpResponse.BodyHandlers.ofString(UTF_8)
         );
         assertEquals(201, response13.statusCode());

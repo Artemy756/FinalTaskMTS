@@ -14,6 +14,7 @@ import org.roombooking.repository.*;
 import org.roombooking.service.AuditoryService;
 import org.roombooking.service.BookService;
 import org.roombooking.service.UserService;
+import org.roombooking.template.TemplateFactory;
 import spark.Service;
 
 import java.time.LocalTime;

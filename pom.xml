@@ -134,6 +134,14 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.7</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/exceptions/**</exclude>
+                        <exclude>**/template/**</exclude>
+                        <exclude>org/roombooking/Main.class</exclude>
+                        <exclude>org/roombooking/controller/BookRecordFreeMakerController.class</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>

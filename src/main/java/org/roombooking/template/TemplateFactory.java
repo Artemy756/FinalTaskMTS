@@ -1,7 +1,8 @@
-package org.roombooking;
+package org.roombooking.template;
 
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
+import org.roombooking.Main;
 import spark.template.freemarker.FreeMarkerEngine;
 
 public class TemplateFactory {

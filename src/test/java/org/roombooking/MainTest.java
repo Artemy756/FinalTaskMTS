@@ -97,7 +97,6 @@ class MainTest {
         ));
         application.start();
         service.awaitInitialization();
-        UserId userId = userService.addUser("a", "1223", "test.email");
         HttpResponse<String> response = HttpClient.newHttpClient()
                 .send(
                         HttpRequest.newBuilder()
@@ -112,7 +111,6 @@ class MainTest {
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
         assertEquals(201, response.statusCode());
-        userService.getAllUser();
         HttpResponse<String> response1 = HttpClient.newHttpClient()
                 .send(
                         HttpRequest.newBuilder()
@@ -123,7 +121,6 @@ class MainTest {
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
         assertEquals(201, response1.statusCode());
-        userService.getUserById(userId);
         HttpResponse<String> response2 = HttpClient.newHttpClient()
                 .send(
                         HttpRequest.newBuilder()
@@ -134,7 +131,6 @@ class MainTest {
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
         assertEquals(201, response2.statusCode());
-        userService.getUserByEmail("test.email");
         HttpResponse<String> response3 = HttpClient.newHttpClient()
                 .send(
                         HttpRequest.newBuilder()
@@ -145,7 +141,6 @@ class MainTest {
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
         assertEquals(201, response3.statusCode());
-        userService.getUserByPhoneNumber("1223");
         HttpResponse<String> response5 = HttpClient.newHttpClient()
                 .send(
                         HttpRequest.newBuilder()
@@ -156,8 +151,6 @@ class MainTest {
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
         assertEquals(201, response5.statusCode());
-        List<Auditory.Pair> time = new ArrayList<>();
-        AuditoryId auditoryId = auditoryService.addAuditory("2", time);
         HttpResponse<String> response4 = HttpClient.newHttpClient()
                 .send(
                         HttpRequest.newBuilder()
@@ -171,7 +164,6 @@ class MainTest {
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
         assertEquals(201, response4.statusCode());
-        auditoryService.updateAuditoryName(auditoryId, "4");
         HttpResponse<String> response6 = HttpClient.newHttpClient()
                 .send(
                         HttpRequest.newBuilder()
@@ -187,7 +179,6 @@ class MainTest {
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
         assertEquals(201, response6.statusCode());
-        auditoryService.getAllAuditory();
         HttpResponse<String> response7 = HttpClient.newHttpClient()
                 .send(
                         HttpRequest.newBuilder()
@@ -198,7 +189,6 @@ class MainTest {
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
         assertEquals(201, response7.statusCode());
-        auditoryService.getAuditoryById(auditoryId);
         HttpResponse<String> response8 = HttpClient.newHttpClient()
                 .send(
                         HttpRequest.newBuilder()
@@ -209,7 +199,6 @@ class MainTest {
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
         assertEquals(201, response8.statusCode());
-        auditoryService.updateAuditoryTime(auditoryId, time);
         HttpResponse<String> response9 = HttpClient.newHttpClient()
                 .send(
                         HttpRequest.newBuilder()
@@ -223,9 +212,6 @@ class MainTest {
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
         assertEquals(201, response9.statusCode());
-        LocalDateTime start = LocalDateTime.of(2023, 12, 21, 12, 0, 0);
-        LocalDateTime end = LocalDateTime.of(2023, 12, 21, 13, 0, 0);
-        BookId bookId = bookService.book(userId, auditoryId, start, end);
         HttpResponse<String> response10 = HttpClient.newHttpClient()
                 .send(
                         HttpRequest.newBuilder()
@@ -240,21 +226,18 @@ class MainTest {
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
         assertEquals(201, response10.statusCode());
-        bookService.cancelBook(bookId);
         HttpResponse<String> response11 = HttpClient.newHttpClient().send(HttpRequest.newBuilder()
                 .method("DELETE", HttpRequest.BodyPublishers.ofString("""
                         {"bookId":{"value":3}}"""))
                 .uri(URI.create("http://localhost:%d/api/book/cancel".formatted(service.port()))).build(), HttpResponse.BodyHandlers.ofString(UTF_8)
         );
         assertEquals(204, response11.statusCode());
-        bookService.getBookRecordsForUser(userId);
         HttpResponse<String> response12 = HttpClient.newHttpClient().send(HttpRequest.newBuilder()
                 .method("GET", HttpRequest.BodyPublishers.ofString("""
                         {"userId":{"value":3}}"""))
                 .uri(URI.create("http://localhost:%d/api/book/for-user".formatted(service.port()))).build(), HttpResponse.BodyHandlers.ofString(UTF_8)
         );
         assertEquals(201, response12.statusCode());
-        bookService.getBookRecordsForUser(userId);
         HttpResponse<String> response13 = HttpClient.newHttpClient().send(HttpRequest.newBuilder()
                 .method("GET", HttpRequest.BodyPublishers.ofString("""
                         {"auditoryId":{"value":3}}"""))

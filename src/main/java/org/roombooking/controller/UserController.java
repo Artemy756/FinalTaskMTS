@@ -113,7 +113,7 @@ public class UserController implements Controller {
 
     private void getAllUsers() {
         service.get(
-                "/api/auditory",
+                "/api/user",
                 (Request request, Response response) -> {
                     response.type("application/json");
                     try {

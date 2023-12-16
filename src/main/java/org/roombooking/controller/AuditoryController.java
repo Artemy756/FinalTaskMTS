@@ -85,7 +85,7 @@ public class AuditoryController implements Controller {
                     response.type("application/json");
                     String body = request.body();
                     AuditoryUpdateNameRequest auditoryUpdateRequest = objectMapper.readValue(body, AuditoryUpdateNameRequest.class);
-                    AuditoryId auditoryId = new AuditoryId(Long.parseLong(request.params("auditoryId")));
+                    AuditoryId auditoryId = new AuditoryId(Long.parseLong(request.params("id")));
                     try {
                         auditoryService.updateAuditoryName(auditoryId, auditoryUpdateRequest.number());
                         LOG.debug("update auditory ");

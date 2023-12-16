@@ -120,7 +120,7 @@ class MainTest {
                         HttpRequest.newBuilder()
                                 .GET(
                                 )
-                                .uri(URI.create("http://localhost:%d/api/user/1".formatted(service.port())))
+                                .uri(URI.create("http://localhost:%d/api/user/id/1".formatted(service.port())))
                                 .build(),
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
@@ -133,7 +133,7 @@ class MainTest {
         assertEquals(201, response3.statusCode());
         HttpResponse<String> response5 = HttpClient.newHttpClient().send(HttpRequest.newBuilder()
                 .method("GET", HttpRequest.BodyPublishers.ofString("""
-                        {"phoneNumber":"122456"}"""))
+                        {"number":"122456"}"""))
                 .uri(URI.create("http://localhost:%d/api/user/by-phone-number".formatted(service.port()))).build(), HttpResponse.BodyHandlers.ofString(UTF_8)
         );
         assertEquals(201, response5.statusCode());
@@ -160,7 +160,7 @@ class MainTest {
                                                         "number": "two"
                                                         }""")
                                 )
-                                .uri(URI.create("http://localhost:%d/api/auditory/1/updatename/two".formatted(service.port())))
+                                .uri(URI.create("http://localhost:%d/api/auditory/1/updatename".formatted(service.port())))
                                 .build(),
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );

@@ -177,32 +177,19 @@ class MainTest {
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
         assertEquals(201, response8.statusCode());
-        HttpResponse<String> response9 = HttpClient.newHttpClient()
-                .send(
-                        HttpRequest.newBuilder()
-                                .PUT(
-                                        HttpRequest.BodyPublishers.ofString(
-                                                """
-                                                        {"availableTime":[{"begin":[7,0],"end":[18,0]},{"begin":[20,0],"end":[22,0]}]}""")
-                                )
-                                .uri(URI.create("http://localhost:%d/api/auditory/1/updatetime".formatted(service.port())))
-                                .build(),
-                        HttpResponse.BodyHandlers.ofString(UTF_8)
-                );
+        HttpResponse<String> response9 = HttpClient.newHttpClient().send(HttpRequest.newBuilder()
+                .method("PATCH", HttpRequest.BodyPublishers.ofString("""
+                        {"availableTime":[{"begin":[7,0],"end":[18,0]},{"begin":[20,0],"end":[22,0]}]}
+                        """))
+                .uri(URI.create("http://localhost:%d/api/auditory/1/updatetime".formatted(service.port()))).build(), HttpResponse.BodyHandlers.ofString(UTF_8)
+        );
         assertEquals(201, response9.statusCode());
-        HttpResponse<String> response10 = HttpClient.newHttpClient()
-                .send(
-                        HttpRequest.newBuilder()
-                                .PUT(
-                                        HttpRequest.BodyPublishers.ofString(
-                                                """
-                                                                                                                {
-                                                        {"userId":{"value":3},"auditoryId":{"value":1},"start":[2023,12,17,18,0],"end":[2023,12,17,19,0]}                                                        }""")
-                                )
-                                .uri(URI.create("http://localhost:%d/api/book".formatted(service.port())))
-                                .build(),
-                        HttpResponse.BodyHandlers.ofString(UTF_8)
-                );
+        HttpResponse<String> response10 = HttpClient.newHttpClient().send(HttpRequest.newBuilder()
+                .method("PATCH", HttpRequest.BodyPublishers.ofString("""
+                        {"userId":{"value":3},"auditoryId":{"value":1},"start":[2023,12,17,18,0],"end":[2023,12,17,19,0]}                                                        }""\")
+                         """))
+                .uri(URI.create("http://localhost:%d/api/book".formatted(service.port()))).build(), HttpResponse.BodyHandlers.ofString(UTF_8)
+        );
         assertEquals(201, response10.statusCode());
         HttpResponse<String> response11 = HttpClient.newHttpClient().send(HttpRequest.newBuilder()
                 .method("DELETE", HttpRequest.BodyPublishers.ofString("""

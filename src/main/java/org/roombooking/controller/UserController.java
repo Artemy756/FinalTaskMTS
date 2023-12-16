@@ -3,11 +3,8 @@ package org.roombooking.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.roombooking.controller.request.*;
 import org.roombooking.controller.response.*;
-import org.roombooking.entity.User;
-import org.roombooking.entity.id.AuditoryId;
 import org.roombooking.entity.id.UserId;
 import org.roombooking.service.UserService;
-import org.roombooking.service.exceptions.AuditoryNotFoundException;
 import org.roombooking.service.exceptions.UserCreateException;
 import org.roombooking.service.exceptions.UserNotFoundException;
 import org.slf4j.Logger;
@@ -63,17 +60,13 @@ public class UserController implements Controller {
                 "/api/user/:id",
                 (Request request, Response response) -> {
                     response.type("application/json");
-                    String body = request.body();
-                    GetUserByIdRequest getUserByIdRequest = objectMapper.readValue(body, GetUserByIdRequest.class);
+                    UserId userId = new UserId(Long.parseLong(request.params("auditoryId")));
                     try {
-                        UserId userId = new UserId(Long.parseLong(request.params("auditoryId")));
                         LOG.debug("get user by id");
                         response.status(201);
                         return objectMapper.writeValueAsString(new GetUserResponse(userService.getUserById(userId)));
                     } catch (UserNotFoundException e) {
-                        LOG.warn("Cannot find user by id", e);
-                        response.status(400);
-                        return objectMapper.writeValueAsString(new ErrorResponse(e.getMessage()));
+                        throw new UserNotFoundException("Cannot find user by id=" + userId, e);
                     }
                 }
 
@@ -82,7 +75,7 @@ public class UserController implements Controller {
 
     private void getUserByEmail() {
         service.get(
-                "/api/user/:id",
+                "/api/user/by-email",
                 (Request request, Response response) -> {
                     response.type("application/json");
                     String body = request.body();
@@ -92,9 +85,7 @@ public class UserController implements Controller {
                         response.status(201);
                         return objectMapper.writeValueAsString(new GetUserResponse(userService.getUserByEmail(getUserByEmailRequest.email())));
                     } catch (UserNotFoundException e) {
-                        LOG.warn("Cannot find user by email", e);
-                        response.status(400);
-                        return objectMapper.writeValueAsString(new ErrorResponse(e.getMessage()));
+                        throw new UserNotFoundException("Cannot find user by email=" + getUserByEmailRequest.email(), e);
                     }
                 }
 
@@ -103,7 +94,7 @@ public class UserController implements Controller {
 
     private void getUserByPhoneNumber() {
         service.get(
-                "/api/user/:id",
+                "/api/user/by-phone-number",
                 (Request request, Response response) -> {
                     response.type("application/json");
                     String body = request.body();
@@ -113,9 +104,7 @@ public class UserController implements Controller {
                         response.status(201);
                         return objectMapper.writeValueAsString(new GetUserResponse(userService.getUserByPhoneNumber(getUserByPhoneNumberRequst.number())));
                     } catch (UserNotFoundException e) {
-                        LOG.warn("Cannot find user by number", e);
-                        response.status(400);
-                        return objectMapper.writeValueAsString(new ErrorResponse(e.getMessage()));
+                        throw new UserNotFoundException("Cannot find user by number=" + getUserByPhoneNumberRequst.number(), e);
                     }
                 }
 
@@ -132,9 +121,7 @@ public class UserController implements Controller {
                         response.status(201);
                         return objectMapper.writeValueAsString(new GetAllUsersResponse(userService.getAllUser()));
                     } catch (UserNotFoundException e) {
-                        LOG.warn("Cannot find user", e);
-                        response.status(400);
-                        return objectMapper.writeValueAsString(new ErrorResponse(e.getMessage()));
+                        throw new UserNotFoundException("Cannot find user ", e);
                     }
                 }
         );

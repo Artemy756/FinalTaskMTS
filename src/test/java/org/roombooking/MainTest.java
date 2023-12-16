@@ -125,25 +125,17 @@ class MainTest {
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
         assertEquals(201, response2.statusCode());
-        HttpResponse<String> response3 = HttpClient.newHttpClient()
-                .send(
-                        HttpRequest.newBuilder()
-                                .GET(
-                                )
-                                .uri(URI.create("http://localhost:%d/api/user/by-email/email@yandex.ru".formatted(service.port())))
-                                .build(),
-                        HttpResponse.BodyHandlers.ofString(UTF_8)
-                );
+        HttpResponse<String> response3 = HttpClient.newHttpClient().send(HttpRequest.newBuilder()
+                .method("GET", HttpRequest.BodyPublishers.ofString("""
+                        {"email":"email@yandex.ru"}"""))
+                .uri(URI.create("http://localhost:%d/api/user/by-email".formatted(service.port()))).build(), HttpResponse.BodyHandlers.ofString(UTF_8)
+        );
         assertEquals(201, response3.statusCode());
-        HttpResponse<String> response5 = HttpClient.newHttpClient()
-                .send(
-                        HttpRequest.newBuilder()
-                                .GET(
-                                )
-                                .uri(URI.create("http://localhost:%d/api/user/by-phone-number/122456".formatted(service.port())))
-                                .build(),
-                        HttpResponse.BodyHandlers.ofString(UTF_8)
-                );
+        HttpResponse<String> response5 = HttpClient.newHttpClient().send(HttpRequest.newBuilder()
+                .method("GET", HttpRequest.BodyPublishers.ofString("""
+                        {"phoneNumber":"122456"}"""))
+                .uri(URI.create("http://localhost:%d/api/user/by-phone-number".formatted(service.port()))).build(), HttpResponse.BodyHandlers.ofString(UTF_8)
+        );
         assertEquals(201, response5.statusCode());
         HttpResponse<String> response4 = HttpClient.newHttpClient()
                 .send(
@@ -201,7 +193,7 @@ class MainTest {
                                                 """
                                                         {"availableTime":[{"begin":[7,0],"end":[18,0]},{"begin":[20,0],"end":[22,0]}]}""")
                                 )
-                                .uri(URI.create("http://localhost:%d/api/auditory/1/updatetime/{\"begin\":[7,0],\"end\":[18,0]}".formatted(service.port())))
+                                .uri(URI.create("http://localhost:%d/api/auditory/1/updatetime".formatted(service.port())))
                                 .build(),
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );

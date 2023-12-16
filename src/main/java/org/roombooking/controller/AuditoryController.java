@@ -108,7 +108,7 @@ public class AuditoryController implements Controller {
                     response.type("application/json");
                     String body = request.body();
                     AuditoryUpdateTimeRequest auditoryUpdateRequest = objectMapper.readValue(body, AuditoryUpdateTimeRequest.class);
-                    AuditoryId auditoryId = new AuditoryId(Long.parseLong(request.params("auditoryId")));
+                    AuditoryId auditoryId = new AuditoryId(Long.parseLong(request.params("id")));
                     try {
                         auditoryService.updateAuditoryTime(auditoryId, auditoryUpdateRequest.availableTime());
                         LOG.debug("update auditory ");

@@ -57,7 +57,7 @@ public class UserController implements Controller {
 
     private void getUserById() {
         service.get(
-                "/api/user/:id",
+                "/api/user/id/:id",
                 (Request request, Response response) -> {
                     response.type("application/json");
                     UserId userId = new UserId(Long.parseLong(request.params("id")));

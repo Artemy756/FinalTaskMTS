@@ -152,7 +152,7 @@ class MainTest {
         assertEquals(201, response4.statusCode());
         HttpResponse<String> response6 = HttpClient.newHttpClient().send(HttpRequest.newBuilder()
                 .method("PATCH", HttpRequest.BodyPublishers.ofString("""
-                                                                                {"number":"three","availableTime":[{"begin":[6,0],"end":[19,0]},{"begin":[21,0],"end":[21,30]}]}""\")
+                                                                                {"number":"three","availableTime":[{"begin":[6,0],"end":[19,0]},{"begin":[21,0],"end":[21,30]}]}
                         """))
                 .uri(URI.create("http://localhost:%d/api/auditory".formatted(service.port()))).build(), HttpResponse.BodyHandlers.ofString(UTF_8)
         );

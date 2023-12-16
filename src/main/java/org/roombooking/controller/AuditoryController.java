@@ -136,7 +136,9 @@ public class AuditoryController implements Controller {
                         response.status(201);
                         return objectMapper.writeValueAsString(new GetAuditoryResponse(auditoryService.getAuditoryById(auditoryId)));
                     } catch (AuditoryNotFoundException e) {
-                        throw new AuditoryNotFoundException("Cannot find auditory by id=" + auditoryId, e);
+                        LOG.warn("Cannot find auditory by id", e);
+                        response.status(400);
+                        return objectMapper.writeValueAsString(new ErrorResponse(e.getMessage()));
                     }
                 }
         );
@@ -152,7 +154,9 @@ public class AuditoryController implements Controller {
                         response.status(201);
                         return objectMapper.writeValueAsString(new GetAllAuditoriesResponse(auditoryService.getAllAuditory()));
                     } catch (ItemNotFoundException e) {
-                        throw new AuditoryNotFoundException("Cannot find auditory", e);
+                        LOG.warn("Cannot find auditory", e);
+                        response.status(400);
+                        return objectMapper.writeValueAsString(new ErrorResponse(e.getMessage()));
 
                     }
                 }

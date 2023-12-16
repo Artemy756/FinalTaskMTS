@@ -13,10 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.roombooking.controller.AuditoryController;
 import org.roombooking.controller.BookRecordController;
 import org.roombooking.controller.UserController;
-import org.roombooking.entity.Auditory;
-import org.roombooking.entity.id.AuditoryId;
-import org.roombooking.entity.id.BookId;
-import org.roombooking.entity.id.UserId;
 import org.roombooking.repository.*;
 import org.roombooking.service.AuditoryService;
 import org.roombooking.service.BookService;
@@ -31,9 +27,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -126,7 +120,7 @@ class MainTest {
                         HttpRequest.newBuilder()
                                 .GET(
                                 )
-                                .uri(URI.create("http://localhost:%d/api/user/:id".formatted(service.port())))
+                                .uri(URI.create("http://localhost:%d1/api/user/:id".formatted(service.port())))
                                 .build(),
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
@@ -136,7 +130,7 @@ class MainTest {
                         HttpRequest.newBuilder()
                                 .GET(
                                 )
-                                .uri(URI.create("http://localhost:%d/api/user/by-email".formatted(service.port())))
+                                .uri(URI.create("http://localhost:%d1/api/user/by-email".formatted(service.port())))
                                 .build(),
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
@@ -146,7 +140,7 @@ class MainTest {
                         HttpRequest.newBuilder()
                                 .GET(
                                 )
-                                .uri(URI.create("http://localhost:%d/api/user/by-phone-number".formatted(service.port())))
+                                .uri(URI.create("http://localhost:%d1/api/user/by-phone-number".formatted(service.port())))
                                 .build(),
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
@@ -194,7 +188,7 @@ class MainTest {
                         HttpRequest.newBuilder()
                                 .GET(
                                 )
-                                .uri(URI.create("http://localhost:%d/api/auditory/:id".formatted(service.port())))
+                                .uri(URI.create("http://localhost:%d1/api/auditory/:id".formatted(service.port())))
                                 .build(),
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
@@ -235,13 +229,13 @@ class MainTest {
         HttpResponse<String> response12 = HttpClient.newHttpClient().send(HttpRequest.newBuilder()
                 .method("GET", HttpRequest.BodyPublishers.ofString("""
                         {"userId":{"value":3}}"""))
-                .uri(URI.create("http://localhost:%d/api/book/for-user".formatted(service.port()))).build(), HttpResponse.BodyHandlers.ofString(UTF_8)
+                .uri(URI.create("http://localhost:%d1/api/book/for-user".formatted(service.port()))).build(), HttpResponse.BodyHandlers.ofString(UTF_8)
         );
         assertEquals(201, response12.statusCode());
         HttpResponse<String> response13 = HttpClient.newHttpClient().send(HttpRequest.newBuilder()
                 .method("GET", HttpRequest.BodyPublishers.ofString("""
                         {"auditoryId":{"value":3}}"""))
-                .uri(URI.create("http://localhost:%d/api/book/for-auditory".formatted(service.port()))).build(), HttpResponse.BodyHandlers.ofString(UTF_8)
+                .uri(URI.create("http://localhost:%d1/api/book/for-auditory".formatted(service.port()))).build(), HttpResponse.BodyHandlers.ofString(UTF_8)
         );
         assertEquals(201, response13.statusCode());
 

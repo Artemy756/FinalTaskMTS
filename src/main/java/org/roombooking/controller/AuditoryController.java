@@ -58,26 +58,6 @@ public class AuditoryController implements Controller {
         );
     }
 
-    private void checkIfAvailable() {
-        service.get(
-                "api/auditory/:id/checkifavailable",
-                (Request request, Response response) -> {
-                    response.type("application/json");
-                    String body = request.body();
-                    CheckIfAvailableRequest checkIfAvailableRequest = objectMapper.readValue(body, CheckIfAvailableRequest.class);
-                    try {
-                        LOG.debug("check available ");
-                        response.status(201);
-                        return objectMapper.writeValueAsString(new CheckIfAvailableResponse());
-                    } catch (RuntimeException e) {
-                        LOG.warn("Cannot check", e);
-                        response.status(400);
-                        return objectMapper.writeValueAsString(new ErrorResponse(e.getMessage()));
-                    }
-                }
-        );
-    }
-
     private void updateName() {
         service.patch(
                 "api/auditory/:id/updatename",

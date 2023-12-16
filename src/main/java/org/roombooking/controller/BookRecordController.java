@@ -34,7 +34,7 @@ public class BookRecordController implements Controller {
     book();
     getBookRecordsForAuditory();
     getBookRecordsForUser();
-    cancelbook();
+    cancel();
   }
 
   private void book() {
@@ -58,9 +58,9 @@ public class BookRecordController implements Controller {
     );
   }
 
-  private void cancelbook() {
+  private void cancel() {
     service.delete(
-            "/api/book",
+            "/api/book/cancel",
             (Request request, Response response) -> {
               response.type("application/json");
               String body = request.body();
@@ -82,7 +82,7 @@ public class BookRecordController implements Controller {
 
   private void getBookRecordsForUser() {
     service.get(
-            "/api/book",
+            "/api/book/for-user",
             (Request request, Response response) -> {
               response.type("application/json");
               String body = request.body();
@@ -103,7 +103,7 @@ public class BookRecordController implements Controller {
 
   private void getBookRecordsForAuditory() {
     service.get(
-            "/api/book",
+            "/api/book/for-auditory",
             (Request request, Response response) -> {
               response.type("application/json");
               String body = request.body();
@@ -112,8 +112,7 @@ public class BookRecordController implements Controller {
                 LOG.debug("find all");
                 response.status(201);
                 return objectMapper.writeValueAsString(new GetBookRecordsForAuditoryResponse(
-                        bookService.getBookRecordsForAuditory(getBookRecordsForAuditoryRequest.auditoryId())
-                ));
+                        bookService.getBookRecordsForAuditory(getBookRecordsForAuditoryRequest.auditoryId())));
               } catch (AuditoryNotFoundException e) {
                 LOG.warn("Cannot book this time", e);
                 response.status(400);

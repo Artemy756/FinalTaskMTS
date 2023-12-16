@@ -2,14 +2,10 @@ package org.roombooking.repository;
 
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
-import org.roombooking.entity.Auditory;
 import org.roombooking.entity.User;
-import org.roombooking.entity.id.AuditoryId;
 import org.roombooking.entity.id.UserId;
 import org.roombooking.repository.exceptions.ItemNotFoundException;
 
-import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,7 +33,7 @@ public class PostgresUserRepository implements UserRepository {
     public void addUser(User user) {
         jdbi.useTransaction((Handle handle) -> handle.createUpdate(
                 "INSERT INTO users (user_id, name, phone_number, email) VALUES (:userId, :name, :phoneNumber, :email)")
-                .bind("userId", user.getUserId())
+                .bind("userId", user.getUserId().value())
                 .bind("name", user.getName())
                 .bind("phoneNumber", user.getPhoneNumber())
                 .bind("email", user.getEmail())

@@ -3,6 +3,7 @@ package org.roombooking.service;
 import org.roombooking.entity.User;
 import org.roombooking.entity.id.UserId;
 import org.roombooking.repository.UserRepository;
+import org.roombooking.repository.exceptions.ItemNotFoundException;
 import org.roombooking.service.exceptions.UserCreateException;
 import org.roombooking.service.exceptions.UserNotFoundException;
 
@@ -16,7 +17,11 @@ public class UserService {
   }
 
   public List<User> getAllUser() {
-    return userRepository.getAllUsers();
+    try {
+      return userRepository.getAllUsers();
+    } catch (ItemNotFoundException e) {
+      throw new UserNotFoundException("Cannot find user", e);
+    }
   }
 
   public User getUserById(UserId id) {

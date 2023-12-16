@@ -44,6 +44,12 @@ public class BookService {
         }
 
         //check that interval is round to 5 min
+        Duration duration = Duration.between(start, end);
+        long minutes = duration.toMinutes();
+        long seconds = duration.minusMinutes(minutes).toSeconds();
+        if (minutes % 5 != 0 || seconds != 0) {
+            return false;
+        }
 
         if (!(start.isAfter(LocalDateTime.now()))) {
             return false;

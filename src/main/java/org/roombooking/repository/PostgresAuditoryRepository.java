@@ -84,7 +84,7 @@ public class PostgresAuditoryRepository implements AuditoryRepository {
                     })
                     .collect(Collectors.toList())
             );
-        } catch (NullPointerException e) {
+        } catch (RuntimeException e) {
             throw new ItemNotFoundException("Couldn't retrieve any auditories");
         }
     }
@@ -104,7 +104,7 @@ public class PostgresAuditoryRepository implements AuditoryRepository {
                         (availableTimeList((Time[]) ((PgArray) result.get("available_time")).getArray()))
                 );
             });
-        } catch (NullPointerException | SQLException e) {
+        } catch (RuntimeException | SQLException e) {
             throw new ItemNotFoundException("Couldn't find auditory with id=" + auditoryId.value());
         }
     }

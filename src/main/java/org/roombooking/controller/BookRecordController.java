@@ -38,7 +38,7 @@ public class BookRecordController implements Controller {
   }
 
   private void book() {
-    service.patch(
+    service.post(
             "/api/book",
             (Request request, Response response) -> {
               response.type("application/json");

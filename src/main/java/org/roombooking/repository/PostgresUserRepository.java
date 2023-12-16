@@ -44,7 +44,7 @@ public class PostgresUserRepository implements UserRepository {
     public List<User> getAllUsers() {
         try {
             return jdbi.inTransaction((Handle handle) -> handle.createQuery(
-                            "SELECT user_id, name, phone_number, email FROM auditories")
+                            "SELECT user_id, name, phone_number, email FROM users")
                     .mapToMap()
                     .list()
                     .stream()

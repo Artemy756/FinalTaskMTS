@@ -13,10 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.roombooking.controller.AuditoryController;
 import org.roombooking.controller.BookRecordController;
 import org.roombooking.controller.UserController;
-import org.roombooking.entity.Auditory;
-import org.roombooking.entity.id.AuditoryId;
-import org.roombooking.entity.id.BookId;
-import org.roombooking.entity.id.UserId;
 import org.roombooking.repository.*;
 import org.roombooking.service.AuditoryService;
 import org.roombooking.service.BookService;
@@ -31,9 +27,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -126,7 +120,7 @@ class MainTest {
                         HttpRequest.newBuilder()
                                 .GET(
                                 )
-                                .uri(URI.create("http://localhost:%d/api/user/:id".formatted(service.port())))
+                                .uri(URI.create("http://localhost:%d/api/user/1".formatted(service.port())))
                                 .build(),
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
@@ -174,7 +168,7 @@ class MainTest {
                                                         "number": "two"
                                                         }""")
                                 )
-                                .uri(URI.create("http://localhost:%d/api/auditory/:id/updatename".formatted(service.port())))
+                                .uri(URI.create("http://localhost:%d/api/auditory/1/updatename".formatted(service.port())))
                                 .build(),
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
@@ -194,7 +188,7 @@ class MainTest {
                         HttpRequest.newBuilder()
                                 .GET(
                                 )
-                                .uri(URI.create("http://localhost:%d/api/auditory/:id".formatted(service.port())))
+                                .uri(URI.create("http://localhost:%d/api/auditory/1".formatted(service.port())))
                                 .build(),
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
@@ -207,7 +201,7 @@ class MainTest {
                                                 """
                                                         {"availableTime":[{"begin":[7,0],"end":[18,0]},{"begin":[20,0],"end":[22,0]}]}""")
                                 )
-                                .uri(URI.create("http://localhost:%d/api/auditory/:id/updatetime".formatted(service.port())))
+                                .uri(URI.create("http://localhost:%d/api/auditory/1/updatetime".formatted(service.port())))
                                 .build(),
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );

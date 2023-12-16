@@ -130,7 +130,7 @@ class MainTest {
                         HttpRequest.newBuilder()
                                 .GET(
                                 )
-                                .uri(URI.create("http://localhost:%d/api/user/by-email".formatted(service.port())))
+                                .uri(URI.create("http://localhost:%d/api/user/by-email/email@yandex.ru".formatted(service.port())))
                                 .build(),
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
@@ -140,7 +140,7 @@ class MainTest {
                         HttpRequest.newBuilder()
                                 .GET(
                                 )
-                                .uri(URI.create("http://localhost:%d/api/user/by-phone-number".formatted(service.port())))
+                                .uri(URI.create("http://localhost:%d/api/user/by-phone-number/122456".formatted(service.port())))
                                 .build(),
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
@@ -168,7 +168,7 @@ class MainTest {
                                                         "number": "two"
                                                         }""")
                                 )
-                                .uri(URI.create("http://localhost:%d/api/auditory/1/updatename".formatted(service.port())))
+                                .uri(URI.create("http://localhost:%d/api/auditory/1/updatename/two".formatted(service.port())))
                                 .build(),
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );
@@ -201,7 +201,7 @@ class MainTest {
                                                 """
                                                         {"availableTime":[{"begin":[7,0],"end":[18,0]},{"begin":[20,0],"end":[22,0]}]}""")
                                 )
-                                .uri(URI.create("http://localhost:%d/api/auditory/1/updatetime".formatted(service.port())))
+                                .uri(URI.create("http://localhost:%d/api/auditory/1/updatetime/{\"begin\":[7,0],\"end\":[18,0]}".formatted(service.port())))
                                 .build(),
                         HttpResponse.BodyHandlers.ofString(UTF_8)
                 );

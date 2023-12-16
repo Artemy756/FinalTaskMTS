@@ -8,7 +8,6 @@ import org.roombooking.service.exceptions.AuditoryCreateException;
 import org.roombooking.service.exceptions.AuditoryNotFoundException;
 import org.roombooking.service.exceptions.AuditoryUpdateException;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class AuditoryService {
